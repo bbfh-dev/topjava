@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web;
 
+import com.sun.org.apache.xml.internal.serializer.Encodings;
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
@@ -35,6 +36,25 @@ public class MealServlet extends HttpServlet {
         storage.create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
         storage.create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
         log.debug("created hard-coded meals: {}", storage.all());
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        String id = request.getParameter("id");
+        String datetime = request.getParameter("datetime");
+        String description = request.getParameter("description");
+        String calories = request.getParameter("calories");
+
+        Meal meal = new Meal(LocalDateTime.parse(datetime), description, Integer.parseInt(calories));
+        if (id.isEmpty()) {
+            storage.create(meal);
+        } else {
+            meal.setId(Integer.parseInt(id));
+            storage.update(meal);
+        }
+
+        response.sendRedirect("meals");
     }
 
     @Override

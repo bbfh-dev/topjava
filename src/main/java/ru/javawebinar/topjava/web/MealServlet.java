@@ -39,9 +39,34 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<MealTo> mealsTo = MealsUtil.filteredByStreams(new ArrayList<>(storage.all()), LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);
-        request.setAttribute("meals", mealsTo);
+        String action = request.getParameter("action");
+        if (action == null) {
+            List<MealTo> mealsTo = MealsUtil.filteredByStreams(new ArrayList<>(storage.all()), LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);
+            request.setAttribute("meals", mealsTo);
 
-        request.getRequestDispatcher("/meals.jsp").forward(request, response);
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
+            return;
+        }
+
+        if (action.equals("delete")) {
+            String mealIdString = request.getParameter("meal_id");
+            if (mealIdString == null) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "missing meal_id parameter");
+                return;
+            }
+            int mealId;
+            try {
+                mealId = Integer.parseInt(mealIdString);
+            } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.toString());
+                return;
+            }
+
+            storage.delete(mealId);
+            response.sendRedirect("meals");
+            return;
+        }
+
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 }

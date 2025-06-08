@@ -45,6 +45,10 @@ public class MealServlet extends HttpServlet {
         String datetime = request.getParameter("datetime");
         String description = request.getParameter("description");
         String calories = request.getParameter("calories");
+        if (datetime.isEmpty() || calories.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "fields must not be empty");
+            return;
+        }
 
         Meal meal = new Meal(LocalDateTime.parse(datetime), description, Integer.parseInt(calories));
         if (id.isEmpty()) {

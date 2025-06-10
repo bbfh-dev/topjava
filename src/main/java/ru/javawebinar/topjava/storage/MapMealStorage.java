@@ -25,7 +25,7 @@ public class MapMealStorage implements MealStorage {
     public Meal create(Meal meal) {
         Integer id = this.id.incrementAndGet();
         meal.setId(id);
-        mealsMap.putIfAbsent(id, meal);
+        mealsMap.put(id, meal);
         return meal;
     }
 

@@ -50,10 +50,6 @@ public class MealServlet extends HttpServlet {
         String datetime = request.getParameter("datetime");
         String description = request.getParameter("description");
         String calories = request.getParameter("calories");
-        if (datetime.isEmpty() || calories.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "fields must not be empty");
-            return;
-        }
 
         Meal meal = new Meal(LocalDateTime.parse(datetime), description, Integer.parseInt(calories));
         if (id.isEmpty()) {
@@ -74,30 +70,15 @@ public class MealServlet extends HttpServlet {
         if (action == null) {
             List<MealTo> mealsTo = MealsUtil.filteredByStreams(new ArrayList<>(storage.getAll()), LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);
             request.setAttribute("meals", mealsTo);
-
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
             return;
         }
 
         if (action.equals("delete")) {
             String mealIdString = request.getParameter("meal_id");
-            if (mealIdString == null) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "missing meal_id parameter");
-                return;
-            }
-            int mealId;
-            try {
-                mealId = Integer.parseInt(mealIdString);
-            } catch (NumberFormatException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.toString());
-                return;
-            }
-
+            int mealId = Integer.parseInt(mealIdString);
             storage.delete(mealId);
             response.sendRedirect("meals");
-            return;
         }
-
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 }

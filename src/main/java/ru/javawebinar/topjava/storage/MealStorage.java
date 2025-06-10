@@ -9,9 +9,9 @@ public interface MealStorage {
 
     Meal find(int id);
 
-    void create(Meal meal);
+    Meal create(Meal meal);
 
-    void update(Meal meal);
+    Meal update(Meal meal);
 
     void delete(int id);
 

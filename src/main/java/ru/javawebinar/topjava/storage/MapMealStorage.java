@@ -22,15 +22,17 @@ public class MapMealStorage implements MealStorage {
     }
 
     @Override
-    public void create(Meal meal) {
+    public Meal create(Meal meal) {
         Integer id = this.id.incrementAndGet();
         meal.setId(id);
         mealsMap.putIfAbsent(id, meal);
+        return meal;
     }
 
     @Override
-    public void update(Meal meal) {
+    public Meal update(Meal meal) {
         mealsMap.computeIfPresent(meal.getId(), (id, value) -> meal);
+        return meal;
     }
 
     @Override

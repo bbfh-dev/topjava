@@ -12,7 +12,7 @@ public class MapMealStorage implements MealStorage {
     private final Map<Integer, Meal> mealsMap = new ConcurrentHashMap<>();
 
     @Override
-    public Collection<Meal> all() {
+    public Collection<Meal> getAll() {
         return mealsMap.values();
     }
 

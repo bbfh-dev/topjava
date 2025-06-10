@@ -35,7 +35,7 @@ public class MealServlet extends HttpServlet {
         storage.create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000));
         storage.create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
         storage.create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
-        log.debug("created hard-coded meals: {}", storage.all());
+        log.debug("created hard-coded meals: {}", storage.getAll());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
-            List<MealTo> mealsTo = MealsUtil.filteredByStreams(new ArrayList<>(storage.all()), LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);
+            List<MealTo> mealsTo = MealsUtil.filteredByStreams(new ArrayList<>(storage.getAll()), LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);
             request.setAttribute("meals", mealsTo);
 
             request.getRequestDispatcher("/meals.jsp").forward(request, response);

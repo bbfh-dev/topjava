@@ -5,7 +5,7 @@ import ru.javawebinar.topjava.model.Meal;
 import java.util.Collection;
 
 public interface MealStorage {
-    Collection<Meal> all();
+    Collection<Meal> getAll();
 
     Meal find(int id);
 

@@ -31,8 +31,7 @@ public class MapMealStorage implements MealStorage {
 
     @Override
     public Meal update(Meal meal) {
-        mealsMap.computeIfPresent(meal.getId(), (id, value) -> meal);
-        return meal;
+        return mealsMap.computeIfPresent(meal.getId(), (id, value) -> meal);
     }
 
     @Override

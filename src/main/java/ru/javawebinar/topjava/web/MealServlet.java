@@ -44,6 +44,8 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        log.info("POST {} with data: {}", request.getRequestURI(), request.getParameterMap().keySet());
+
         String id = request.getParameter("id");
         String datetime = request.getParameter("datetime");
         String description = request.getParameter("description");
@@ -66,6 +68,8 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.info("GET {} with query params: {}", request.getRequestURI(), request.getQueryString());
+
         String action = request.getParameter("action");
         if (action == null) {
             List<MealTo> mealsTo = MealsUtil.filteredByStreams(new ArrayList<>(storage.getAll()), LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);

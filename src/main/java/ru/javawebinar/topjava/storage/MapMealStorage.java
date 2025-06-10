@@ -39,9 +39,4 @@ public class MapMealStorage implements MealStorage {
     public void delete(int id) {
         mealsMap.remove(id);
     }
-
-    @Override
-    public void delete(Meal meal) {
-        mealsMap.remove(meal.getId());
-    }
 }

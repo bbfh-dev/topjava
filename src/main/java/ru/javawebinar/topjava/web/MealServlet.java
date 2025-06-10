@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.web;
 
-import com.sun.org.apache.xml.internal.serializer.Encodings;
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;

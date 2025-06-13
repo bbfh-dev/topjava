@@ -3,19 +3,20 @@ package ru.javawebinar.topjava.repository.inmemory;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.DEFAULT_USER_ID;
+
 public class InMemoryMealRepository implements MealRepository {
     private final Map<Integer, Map<Integer, Meal>> usersToMealsMap = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(meal -> this.save(meal, SecurityUtil.authUserId()));
+        MealsUtil.meals.forEach(meal -> this.save(meal, DEFAULT_USER_ID));
     }
 
     private Map<Integer, Meal> getOrInitMealsMap(int userId) {

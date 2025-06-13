@@ -29,7 +29,11 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public User save(User user) {
         log.info("save {}", user);
-        return usersMap.put(counter.incrementAndGet(), user);
+        if (user.isNew()) {
+            user.setId(counter.incrementAndGet());
+            return usersMap.put(user.getId(), user);
+        }
+        return usersMap.computeIfPresent(user.getId(), (id, oldUser) -> user);
     }
 
     @Override

@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.DEFAULT_USER_ID;
+import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.TEST_USER_ID;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
@@ -26,8 +27,8 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         MealsUtil.meals.forEach(meal -> this.save(meal, DEFAULT_USER_ID));
-        this.save(new Meal(LocalDateTime.now(), "food of another user!", 69), DEFAULT_USER_ID + 1);
-        this.save(new Meal(LocalDateTime.now(), "yet another food of another user!", 420), DEFAULT_USER_ID + 1);
+        this.save(new Meal(LocalDateTime.now(), "food of another user!", 69), TEST_USER_ID);
+        this.save(new Meal(LocalDateTime.now(), "yet another food of another user!", 420), TEST_USER_ID);
     }
 
     @Override

@@ -5,11 +5,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
 import java.util.Arrays;
+import java.util.List;
 
 public class SpringMain {
     public static void main(String[] args) {
@@ -21,6 +26,11 @@ public class SpringMain {
 
             MealRestController mealUserController = appCtx.getBean(MealRestController.class);
             mealUserController.create(new Meal(null, LocalDateTime.MIN, "example", 69));
+            System.out.println(
+                    mealUserController.getAll()
+            );
+            List<MealTo> meals = mealUserController.getFiltered(LocalDate.of(2020, Month.JANUARY, 31), LocalTime.of(0, 0), LocalDate.of(2020, Month.FEBRUARY, 1), LocalTime.of(7, 0));
+            System.out.println(meals);
         }
     }
 }

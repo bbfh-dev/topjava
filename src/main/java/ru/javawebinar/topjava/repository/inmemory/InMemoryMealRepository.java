@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -27,8 +28,8 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         MealsUtil.meals.forEach(meal -> this.save(meal, DEFAULT_USER_ID));
-        this.save(new Meal(LocalDateTime.now(), "food of another user!", 69), TEST_USER_ID);
-        this.save(new Meal(LocalDateTime.now(), "yet another food of another user!", 420), TEST_USER_ID);
+        this.save(new Meal(LocalDateTime.of(2021, Month.APRIL, 15, 12, 0), "food of another user!", 69), TEST_USER_ID);
+        this.save(new Meal(LocalDateTime.of(2021, Month.APRIL, 15, 17, 0), "yet another food of another user!", 420), TEST_USER_ID);
     }
 
     @Override
@@ -47,19 +48,13 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public boolean delete(int id, int userId) {
         Map<Integer, Meal> mealsMap = usersToMealsMap.get(userId);
-        if (mealsMap == null) {
-            return false;
-        }
-        return mealsMap.remove(id) != null;
+        return mealsMap != null && mealsMap.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
         Map<Integer, Meal> mealsMap = usersToMealsMap.get(userId);
-        if (mealsMap == null) {
-            return null;
-        }
-        return mealsMap.get(id);
+        return mealsMap == null ? null : mealsMap.get(id);
     }
 
     @Override
@@ -74,10 +69,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     private List<Meal> filterByPredicate(int userId, Predicate<Meal> filter) {
         Map<Integer, Meal> mealsMap = usersToMealsMap.get(userId);
-        if (mealsMap == null) {
-            return Collections.emptyList();
-        }
-        return mealsMap.values().stream()
+        return mealsMap == null ? Collections.emptyList() : mealsMap.values().stream()
                 .filter(filter)
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());

@@ -15,10 +15,14 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
+
     public static final int DEFAULT_USER_ID = 1;
-    private final Map<Integer, User> usersMap = new ConcurrentHashMap<>();
-    private final AtomicInteger counter = new AtomicInteger(0);
+
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
+
+    private final Map<Integer, User> usersMap = new ConcurrentHashMap<>();
+
+    private final AtomicInteger counter = new AtomicInteger(0);
 
     @Override
     public boolean delete(int id) {

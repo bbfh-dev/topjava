@@ -29,7 +29,7 @@ public class SpringMain {
             System.out.println(
                     mealUserController.getAll()
             );
-            List<MealTo> meals = mealUserController.getFiltered(LocalDate.of(2020, Month.JANUARY, 31), LocalTime.of(0, 0), LocalDate.of(2020, Month.FEBRUARY, 1), LocalTime.of(7, 0));
+            List<MealTo> meals = mealUserController.getFiltered(LocalDate.of(2020, Month.JANUARY, 31), LocalTime.of(0, 0), LocalDate.of(2020, Month.JANUARY, 31), LocalTime.of(7, 0));
             System.out.println(meals);
         }
     }

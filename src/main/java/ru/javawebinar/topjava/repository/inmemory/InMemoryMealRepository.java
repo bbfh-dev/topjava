@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -28,13 +29,9 @@ public class InMemoryMealRepository implements MealRepository {
         this.save(new Meal(LocalDateTime.now(), "yet another food of another user!", 420), DEFAULT_USER_ID + 1);
     }
 
-    private Map<Integer, Meal> getOrInitMealsMap(int userId) {
-        return usersToMealsMap.computeIfAbsent(userId, id -> new ConcurrentHashMap<>());
-    }
-
     @Override
     public Meal save(Meal meal, int userId) {
-        Map<Integer, Meal> mealsMap = this.getOrInitMealsMap(userId);
+        Map<Integer, Meal> mealsMap = usersToMealsMap.computeIfAbsent(userId, id -> new ConcurrentHashMap<>());
 
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
@@ -47,13 +44,19 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        Map<Integer, Meal> mealsMap = this.getOrInitMealsMap(userId);
+        Map<Integer, Meal> mealsMap = usersToMealsMap.get(userId);
+        if (mealsMap == null) {
+            return false;
+        }
         return mealsMap.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        Map<Integer, Meal> mealsMap = this.getOrInitMealsMap(userId);
+        Map<Integer, Meal> mealsMap = usersToMealsMap.get(userId);
+        if (mealsMap == null) {
+            return null;
+        }
         return mealsMap.get(id);
     }
 
@@ -68,7 +71,10 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     private List<Meal> filterByPredicate(int userId, Predicate<Meal> filter) {
-        Map<Integer, Meal> mealsMap = this.getOrInitMealsMap(userId);
+        Map<Integer, Meal> mealsMap = usersToMealsMap.get(userId);
+        if (mealsMap == null) {
+            return Collections.emptyList();
+        }
         return mealsMap.values().stream()
                 .filter(filter)
                 .sorted(Comparator.comparing(Meal::getDate))

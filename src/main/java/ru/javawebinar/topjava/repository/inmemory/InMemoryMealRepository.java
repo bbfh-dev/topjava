@@ -24,6 +24,8 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         MealsUtil.meals.forEach(meal -> this.save(meal, DEFAULT_USER_ID));
+        this.save(new Meal(LocalDateTime.now(), "food of another user!", 69), DEFAULT_USER_ID + 1);
+        this.save(new Meal(LocalDateTime.now(), "yet another food of another user!", 420), DEFAULT_USER_ID + 1);
     }
 
     private Map<Integer, Meal> getOrInitMealsMap(int userId) {

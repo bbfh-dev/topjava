@@ -68,7 +68,7 @@ public class InMemoryMealRepository implements MealRepository {
         Map<Integer, Meal> mealsMap = this.getOrInitMealsMap(userId);
         return mealsMap.values().stream()
                 .filter(filter)
-                .sorted(Comparator.comparing(Meal::getDate).reversed())
+                .sorted(Comparator.comparing(Meal::getDate))
                 .collect(Collectors.toList());
     }
 }

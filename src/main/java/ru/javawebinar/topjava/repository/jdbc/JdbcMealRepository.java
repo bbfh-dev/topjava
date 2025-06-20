@@ -48,7 +48,7 @@ public class JdbcMealRepository implements MealRepository {
             meal.setId(newKey.intValue());
         } else if (namedParameterJdbcTemplate.update(
                 "UPDATE meals SET user_id=:user_id, datetime=:datetime, description=:description, calories=:calories " +
-                        "WHERE id=:id", params) == 0) {
+                        "WHERE id=:id AND user_id=:user_id", params) == 0) {
             return null;
         }
         return meal;
@@ -67,7 +67,7 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals ORDER BY datetime DESC", ROW_MAPPER);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id = ? ORDER BY datetime DESC", ROW_MAPPER, userId);
     }
 
     @Override

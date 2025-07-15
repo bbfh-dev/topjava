@@ -24,13 +24,13 @@ public class JspMealController extends AbstractMealController {
         super(service);
     }
 
-    @GetMapping("/")
+    @GetMapping("/meals")
     public String getAll(Model model) {
         model.addAttribute("meals", super.getAll());
         return "meals";
     }
 
-    @GetMapping("/filter")
+    @GetMapping("/meals/filter")
     public String getBetween(HttpServletRequest request, Model model) {
         LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
         LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
@@ -41,20 +41,20 @@ public class JspMealController extends AbstractMealController {
         return "meals";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/meals/create")
     public String create(Model model) {
         model.addAttribute("meal",
                 new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000));
         return "mealForm";
     }
 
-    @GetMapping("/update")
+    @GetMapping("/meals/update")
     public String update(HttpServletRequest request, Model model) {
         model.addAttribute("meal", super.get(getId(request)));
         return "mealForm";
     }
 
-    @PostMapping("/")
+    @PostMapping("/meals")
     public String createOrUpdate(HttpServletRequest request) {
         Meal meal = new Meal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
@@ -69,7 +69,7 @@ public class JspMealController extends AbstractMealController {
         return "redirect:/meals";
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/meals/delete")
     public String delete(HttpServletRequest request) {
         super.delete(getId(request));
         return "redirect:/meals";

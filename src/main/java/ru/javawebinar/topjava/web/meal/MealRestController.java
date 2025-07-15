@@ -5,7 +5,7 @@ import ru.javawebinar.topjava.service.MealService;
 
 @Controller
 public class MealRestController extends AbstractMealController {
-    public MealRestController(MealService service) {
+    protected MealRestController(MealService service) {
         super(service);
     }
 }

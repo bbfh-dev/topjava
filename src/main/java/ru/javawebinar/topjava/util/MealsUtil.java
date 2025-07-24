@@ -41,4 +41,13 @@ public class MealsUtil {
     private static MealTo createTo(Meal meal, boolean excess) {
         return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
+
+    public static List<Meal> fromTos(List<MealTo> mealTos) {
+        return mealTos.stream().map(mealTo -> new Meal(
+                mealTo.getId(),
+                mealTo.getDateTime(),
+                mealTo.getDescription(),
+                mealTo.getCalories()
+        )).collect(Collectors.toList());
+    }
 }

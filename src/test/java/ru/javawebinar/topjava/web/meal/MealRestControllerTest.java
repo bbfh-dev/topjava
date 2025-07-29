@@ -12,7 +12,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
-import java.time.LocalTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
-import static ru.javawebinar.topjava.UserTestData.user;
 
 class MealRestControllerTest extends AbstractControllerTest {
 
@@ -35,7 +34,15 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_TO_MATCHER.contentJson(MealsUtil.getTos(meals, user.getCaloriesPerDay())));
+                .andExpect(MEAL_TO_MATCHER.contentJson(List.of(
+                        MealsUtil.createTo(meal7, true),
+                        MealsUtil.createTo(meal6, true),
+                        MealsUtil.createTo(meal5, true),
+                        MealsUtil.createTo(meal4, true),
+                        MealsUtil.createTo(meal3, false),
+                        MealsUtil.createTo(meal2, false),
+                        MealsUtil.createTo(meal1, false)
+                )));
     }
 
     @Test
@@ -91,9 +98,11 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_TO_MATCHER.contentJson(MealsUtil.getFilteredTos(
-                        meals, user.getCaloriesPerDay(),
-                        LocalTime.of(12, 0, 0), LocalTime.of(21, 0, 0)
+                .andExpect(MEAL_TO_MATCHER.contentJson(List.of(
+                        MealsUtil.createTo(meal7, true),
+                        MealsUtil.createTo(meal6, true),
+                        MealsUtil.createTo(meal3, false),
+                        MealsUtil.createTo(meal2, false)
                 )));
     }
 }

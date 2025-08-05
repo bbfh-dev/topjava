@@ -11,7 +11,7 @@ import java.util.List;
 
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfDayOrMin;
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfNextDayOrMax;
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class MealService {
@@ -23,11 +23,11 @@ public class MealService {
     }
 
     public Meal get(int id, int userId) {
-        return checkNotFound(repository.get(id, userId), id);
+        return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     public void delete(int id, int userId) {
-        checkNotFound(repository.delete(id, userId), id);
+        checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
     public List<Meal> getBetweenInclusive(@Nullable LocalDate startDate, @Nullable LocalDate endDate, int userId) {
@@ -40,7 +40,7 @@ public class MealService {
 
     public void update(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
-        checkNotFound(repository.save(meal, userId), meal.id());
+        checkNotFoundWithId(repository.save(meal, userId), meal.id());
     }
 
     public Meal create(Meal meal, int userId) {
@@ -49,6 +49,6 @@ public class MealService {
     }
 
     public Meal getWithUser(int id, int userId) {
-        return checkNotFound(repository.getWithUser(id, userId), id);
+        return checkNotFoundWithId(repository.getWithUser(id, userId), id);
     }
 }

@@ -112,7 +112,7 @@
                     <spring:message code="common.cancel"/>
                 </button>
                 <button type="button" class="btn btn-primary" onclick="save()"><spring:message
-                        code="common.save"/></button>
+                        code="common.save"/>
                 </button>
             </div>
         </div>
